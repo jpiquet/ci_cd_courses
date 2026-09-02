@@ -1,0 +1,34 @@
+# Donne le nom au workflow (choisir quelque chose d'explicite)
+name: Nom de l'action
+
+# Declancheur de l'action. C'est l'evenement qui déclanche le workflow. (push, pull request..)
+on:
+  push:
+    branches: [main]
+
+# Definie les differentes actions que va effectuer le workflow
+# Chaque job s'execute sur sa propre machine virtuel (appelé runner)
+# peut contenir plusieur étapes (steps)
+# peut déprendre d'autres jobs ou s'executer en parallèle
+# Ici, build & test s'execute en parallèle.
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Je construis"
+
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Je teste"
+
+# ici deploye attend que build et test soit fini pour se lancer avec le mots "needs".
+  deploy:
+    runs-on: ubuntu-24.04
+    needs: [build, test]    # Attend que les deux soient terminés
+    steps:
+      - run: echo "Deploy"
+
+
+
+
