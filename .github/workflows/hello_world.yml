@@ -1,0 +1,27 @@
+# Give a name to the workflow
+name: Hello world workflow
+
+# "on" to select on which action the workflow will execute
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: ubuntu-lastest
+    steps:
+      - uses: action/checkout@v2
+      - name: hello world
+        run: echo "Hello world"
+        shell: bash
+  goodbye:
+    runs-on: ubuntu-lastest
+    steps:
+      - name: goodbye world
+        run: echo "GoOdbye World"
+        shell: bash
