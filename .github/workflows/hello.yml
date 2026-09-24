@@ -4,6 +4,14 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Où déployer ?'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
 
 jobs:
   hello:
@@ -18,3 +26,4 @@ jobs:
           echo "Branche: \${{ github.ref_name }}"
           echo "Auteur du commit: \${{ github.actor }}"
           echo "Test echo secrets: ${{ secrets.COUCOU_SECRET }}"
+          echo "Test echo secrets: ${{ vars.VARIBLE_TEST }}"
