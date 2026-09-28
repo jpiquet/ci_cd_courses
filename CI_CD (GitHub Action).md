@@ -139,3 +139,57 @@ curl -s https://api.github.com/repos/actions/checkout/commits/v4 | jq -r .sha
 # Via la CLI gh
 gh api repos/actions/checkout/commits/v4 --jq .sha
 ```
+
+## Jobs
+
+| Propriété          | Obligatoire  | Description                                             |
+|--------------------|-------------|---------------------------------------------------------|
+| `runs-on`          | oui         | Machine virtuelle (ubuntu-24.04, windows-2022, macos-14)|
+| `steps`            | oui         | Liste les étapes à exécuter                             |
+| `name`             | non         | Nom affiché dans l'interface (recommandé)               |
+| `needs`            | non         | Jobs à attendre avant de démarrer                       |
+| `if`               | non         | Condition d'exécution                                   |
+| `timeout-minutes`  | non         | Durée max avant échec (défaut: 360min !)                |
+| `permissions`      | non         | Permissions GITHUB_TOKEN our ce job                     |
+| `environment`      | non         | Environnement cible (staging, prodution...)             |
+| `env`              | non         | Variables d'environnement                               |
+
+## Steps
+
+```yml
+steps:
+  # Exécuter seulement si les steps précédents ont réussi (défaut)
+  - name: Déployer
+    if: success()
+    run: ./deploy.sh
+
+  # Exécuter TOUJOURS (même si un step a échoué)
+  - name: Nettoyer
+    if: always()
+    run: rm -rf temp/
+
+  # Exécuter seulement en cas d'échec
+  - name: Notifier l'équipe
+    if: failure()
+    run: ./notify-slack.sh "Le build a échoué !"
+
+  # Continuer même si ce step échoue
+  - name: Analyse optionnelle
+    continue-on-error: true
+    run: npm run analyze
+
+  # Timeout personnalisé (utile pour les tests lents)
+  - name: Tests d'intégration
+    timeout-minutes: 15
+    run: npm run test:integration
+
+  # Exécuter dans un dossier spécifique
+  - name: Tests frontend
+    working-directory: ./frontend
+    run: npm test
+```
+
+## Checkout:
+
+L'utilisation de `action/checkout` permet de clone le code que l ón veut integrer en utilisant checkout.
+Sans ca Github Action ne sais pas sur quoi effectué les tests.
