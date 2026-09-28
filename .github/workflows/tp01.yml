@@ -1,13 +1,38 @@
-name: TP01
+# TODO: Complétez ce workflow
+#
+# Objectif : Créer un pipeline CI qui :
+# 1. Se déclenche sur push vers main ET sur pull_request
+# 2. Récupère le code
+# 3. Installe Python 3.11
+# 4. Installe les dépendances
+# 5. Lance les tests pytest
+
+name: CI
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+
+# Permissions minimales (bonne pratique sécurité)
+permissions:
+  contents: read
 
 jobs:
   setup:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
-      - uses: actions/setup-python@8549b9f8f590ad24eab7482f36f6e1e24d34597b
-			
+      
+      - name: Install python
+        uses: actions/setup-python@8549b9f8f590ad24eab7482f36f6e1e24d34597b
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run test
+        run: pytest
