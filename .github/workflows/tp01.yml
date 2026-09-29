@@ -31,8 +31,11 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      # Afficher tout l'événement (utile pour le debug)
+      - name: Debug - Voir l'événement complet
+        run: echo '${{ toJSON(github.event) }}'
 
-      - name: Run test
-        run: pytest
+      # Pour un push : accéder aux commits
+      - name: Liste des commits (sur un push)
+        run: echo '${{ toJSON(github.event.commits) }}'
+

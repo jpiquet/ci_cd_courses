@@ -193,3 +193,6 @@ steps:
 
 L'utilisation de `action/checkout` permet de clone le code que l ón veut integrer en utilisant checkout.
 Sans ca Github Action ne sais pas sur quoi effectué les tests.
+
+## Context et expressions GitHub Actions
+
