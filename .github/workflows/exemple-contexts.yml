@@ -2,7 +2,7 @@ name: Mon premier workflow avec contexts
 
 on: 
   push:
-    branch: [new_branch]
+    branches: [new_branch]
 
 permissions:
   contents: read  # Permissions minimales
